@@ -1,13 +1,111 @@
 body {
   margin: 0;
+  background-image: url(./background.jpg) ;
+  background-size: 'cover';
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --chakra-fontWeights-bold: 700;
+  --chakra-fonts-heading: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.form-login-container {
+  width: 520px;
+  padding: 48px;
+  box-shadow: 0px 0px 21px ;
+  background: #fff;
+  height: 695px;
+
+  justify-content: center;
+  align-items: center; 
+}
+.button {
+  padding: 20px 10px; 
+  font-size: 16px;
+  border: none; 
+  background-color: #2419c5; 
+  color: rgb(243, 234, 234); 
+  cursor: pointer; 
+  border-radius: 20px;
+  width: 420px;
+  line-height: 1.2;
+  
+}
+.head{
+  font-family: var(--chakra-fonts-heading);
+    font-weight: var(--chakra-fontWeights-bold);
+    font-size: 36px;
+
+    color: var(--chakra-colors-navy-700);
+    margin-bottom: 10px;
+    line-height: 1.2;
+    text-align: center;
+}
+.head2{
+  font-family: var(--chakra-fonts-heading);
+    font-weight: var(--chakra-fontWeights-bold);
+    font-size: 23px;
+
+    color: var(--chakra-colors-navy-700);
+    margin-bottom: 10px;
+    line-height: 2;
+  
+}
+.or{
+  font-size: 25px;
+  line-height: 1.5;
+  margin-left: 40%;
+}
+.input {
+  padding: 10px;
+  font-size: 20px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  width: 400px;
+  line-height: 2;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+.label {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 5px;
+  color: #260606;
+  line-height: 2.5;
+  
+}
+.link {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: blue;
+  line-height: 2;
+  font-size: 19;
+}
+.round-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: blue;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+.checkbox{
+  line-height: 2;
 }
