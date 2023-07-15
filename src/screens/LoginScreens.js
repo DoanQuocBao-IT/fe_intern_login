@@ -1,7 +1,48 @@
-import React from 'react'
+import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
+export const getAccessToken = () => {
+  return localStorage.getItem('accessToken');
+};
+
+export const setAccessToken = (accessToken) => {
+  localStorage.setItem('accessToken', accessToken);
+};
+
+export const getRefreshToken = () => {
+  return localStorage.getItem('refreshToken');
+};
+
+export const setRefreshToken = (refreshToken) => {
+  localStorage.setItem('refreshToken', refreshToken);
+};
+
+export const refreshAccessToken = async () => {
+  const refreshToken = getRefreshToken();
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  };
+
+  try {
+    const response = await axios.post('https://hochiminh.mobifone.vn/luongAMGP/auth/refresh-token', {
+      refreshToken: refreshToken
+    }, config);
+
+    const newAccessToken = response.data.accessToken;
+    setAccessToken(newAccessToken);
+
+    return newAccessToken;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Lỗi khi làm mới access token');
+  }
+};
 
 const LoginScreens = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,47 +70,6 @@ const LoginScreens = () => {
     setRememberMe(!rememberMe);
   };
 
-const getAccessToken = () => {
-  return localStorage.getItem('accessToken');
-};
-
-const setAccessToken = (accessToken) => {
-  localStorage.setItem('accessToken', accessToken);
-};
-
-const getRefreshToken = () => {
-  return localStorage.getItem('refreshToken');
-};
-
-const setRefreshToken = (refreshToken) => {
-  localStorage.setItem('refreshToken', refreshToken);
-};
-
-const refreshAccessToken = async () => {
-  const refreshToken = getRefreshToken();
-
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    }
-  };
-
-  try {
-    const response = await axios.post('https://hochiminh.mobifone.vn/luongAMGP/auth/refresh-token', {
-      refreshToken: refreshToken
-    }, config);
-
-    const newAccessToken = response.data.accessToken;
-    setAccessToken(newAccessToken);
-
-    return newAccessToken;
-  } catch (error) {
-    console.log(error);
-    throw new Error('Lỗi khi làm mới access token');
-  }
-};
-
   const handleLogin = async (event) => {
     event.preventDefault();
     setMessage('');
@@ -91,7 +91,7 @@ const refreshAccessToken = async () => {
   
       setMessage("Bạn đã đăng nhập thành công");
       console.log(response);
-      navigate('/');
+      navigate('/loginsuccess');
 
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
