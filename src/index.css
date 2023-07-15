@@ -12,15 +12,4 @@ code {
     monospace;
 }
 
-.container {
-  display: flex;
-  height: 100vh;
-}
-
-.section {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 

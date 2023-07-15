@@ -1,18 +1,13 @@
 import React from 'react'
 import { useState } from 'react';
-import { Button, Input, Form, Checkbox } from 'antd';
-import ButtonGroup from 'antd/es/button/button-group';
+import { Button, Input, Form, Checkbox, Image } from 'antd';
 import {GooglePlusOutlined,UserOutlined,LockOutlined} from '@ant-design/icons';
 
 const LoginScreens = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
 
-  const handleCheckboxChange = () => {
-    setShowPassword(!showPassword);
-  };
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
@@ -59,70 +54,69 @@ const LoginScreens = () => {
   }, [hasStoredCredentials, storedUsername, storedPassword]);
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <h1>Đăng nhập</h1>
-      
-      <Form name="loginForm"
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <Form name="loginForm"
         initialValues={{ remember: true }}
         style={{ width: 300 }}>
-        <Form.Item>
-          <GooglePlusOutlined />
-          <Button>Sign in with Google</Button>
-        </Form.Item>
+          <h1>Đăng nhập</h1>
+          <Form.Item>
+            <GooglePlusOutlined />
+            <Button size='large'>Sign in with Google</Button>
+          </Form.Item>
 
-        <Form.Item>
-          <label htmlFor="username">Email</label>
-          <Input size="large" prefix={<UserOutlined />}
-              isRequired={true}
-              variant='auth'
-              fontSize='sm'
-              ms={{ base: "0px", md: "0px" }}
-              type='email'
-              placeholder='mail@simmmple.com'
-              mb='24px'
-              fontWeight='500'
-              id="username" 
-              value={username}
-              onChange={handleUsernameChange}/>
-        </Form.Item>
+          <Form.Item label="Username"
+          name="username"
+          rules={[{ required: true, message: 'Please input your username!' }]}>
+            <Input size="large" prefix={<UserOutlined />}
+                isRequired={true}
+                variant='auth'
+                type='email'
+                placeholder='mail@simmmple.com'
+                id="username" 
+                value={username}
+                onChange={handleUsernameChange}/>
+          </Form.Item>
+
+        
+          <Form.Item label="Password" 
+          name="password"
+          rules={[{ required: true, message: 'Please input your password!' }]}>
+            <Input.Password size="large" prefix={<LockOutlined />}
+                  isRequired={true}
+                  placeholder='Min. 8 characters'
+                  variant='auth' 
+                  id="password"
+                  value={password}
+                  onChange={handlePasswordChange}/>
+            <Button type='link'>Forgot password</Button>
+          </Form.Item>
+
+          
+          <Form.Item>
+            <label>
+              <Checkbox
+                name="remember"
+                checked={rememberMe}
+                onChange={handleRememberMeChange}
+              />
+              Keep me logged in
+            </label>
+          </Form.Item>
+        
+          <Form.Item>
+            <Button type='primary' size='large'
+            onClick={handleLogin}>Sign in</Button>
+          </Form.Item>
+          
+          
+          <Form.Item>
+            <label>Not registered yet?</label>
+            <Button type='link'>Create an Account</Button>
+          </Form.Item>
+        </Form>
+      </div>
 
       
-        <Form.Item>
-          <label htmlFor="password">Password</label>
-          <Input size="large" prefix={<LockOutlined />}
-                isRequired={true}
-                fontSize='sm'
-                placeholder='Min. 8 characters'
-                mb='24px'
-                type={showPassword ? "text" : "password"}
-                variant='auth' id="password"
-                value={password}
-                onChange={handlePasswordChange}/>
-          <Button type='link'>Forgot password</Button>
-        </Form.Item>
-
-        
-        <Form.Item>
-          <label>
-            <Checkbox
-              name="remember"
-              checked={rememberMe}
-              onChange={handleRememberMeChange}
-            />
-            Keep me logged in
-          </label>
-        </Form.Item>
-       
-        <Form.Item>
-          <Button type='primary'
-          onClick={handleLogin}>Sign in</Button>
-        </Form.Item>
-        
-        
-        <Form.Item>
-          <label>Not registered yet?</label>
-          <Button type='link'>Create an Account</Button>
-        </Form.Item>
-      </Form>
     </div>
   )
 }
