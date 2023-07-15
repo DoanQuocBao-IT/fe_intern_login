@@ -1,5 +1,8 @@
 import React from 'react'
 import { useState } from 'react';
+import { Button, Input, Form, Checkbox } from 'antd';
+import ButtonGroup from 'antd/es/button/button-group';
+import {GooglePlusOutlined,UserOutlined,LockOutlined} from '@ant-design/icons';
 
 const LoginScreens = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -55,15 +58,21 @@ const LoginScreens = () => {
     }
   }, [hasStoredCredentials, storedUsername, storedPassword]);
   return (
-    <div className='container'>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <h1>Đăng nhập</h1>
-      <form >
-        <div>
-          <button>Đăng nhập với Google</button>
-        </div>
-        <div>
-          <label htmlFor="username">Tài khoản:</label>
-          <input isRequired={true}
+      
+      <Form name="loginForm"
+        initialValues={{ remember: true }}
+        style={{ width: 300 }}>
+        <Form.Item>
+          <GooglePlusOutlined />
+          <Button>Sign in with Google</Button>
+        </Form.Item>
+
+        <Form.Item>
+          <label htmlFor="username">Email</label>
+          <Input size="large" prefix={<UserOutlined />}
+              isRequired={true}
               variant='auth'
               fontSize='sm'
               ms={{ base: "0px", md: "0px" }}
@@ -71,50 +80,49 @@ const LoginScreens = () => {
               placeholder='mail@simmmple.com'
               mb='24px'
               fontWeight='500'
-              size='lg' id="username" 
+              id="username" 
               value={username}
               onChange={handleUsernameChange}/>
-        </div>
+        </Form.Item>
 
       
-        <div>
-          <label htmlFor="password">Mật khẩu:</label>
-          <input isRequired={true}
+        <Form.Item>
+          <label htmlFor="password">Password</label>
+          <Input size="large" prefix={<LockOutlined />}
+                isRequired={true}
                 fontSize='sm'
                 placeholder='Min. 8 characters'
                 mb='24px'
-                size='lg'
                 type={showPassword ? "text" : "password"}
                 variant='auth' id="password"
                 value={password}
                 onChange={handlePasswordChange}/>
-        </div>
+          <Button type='link'>Forgot password</Button>
+        </Form.Item>
 
-        <div>
-          <button>Quên mật khẩu</button>
-        </div>
         
-        <div>
+        <Form.Item>
           <label>
-            <input
-              type="checkbox"
+            <Checkbox
+              name="remember"
               checked={rememberMe}
               onChange={handleRememberMeChange}
             />
-            Lưu tài khoản và mật khẩu
+            Keep me logged in
           </label>
-        </div>
+        </Form.Item>
        
-        <div>
-          <button type="submit"
-          onClick={handleLogin}>Đăng nhập</button>
-        </div>
+        <Form.Item>
+          <Button type='primary'
+          onClick={handleLogin}>Sign in</Button>
+        </Form.Item>
         
         
-        <div>
-          <button>Tạo tài khoản</button>
-        </div>
-      </form>
+        <Form.Item>
+          <label>Not registered yet?</label>
+          <Button type='link'>Create an Account</Button>
+        </Form.Item>
+      </Form>
     </div>
   )
 }
