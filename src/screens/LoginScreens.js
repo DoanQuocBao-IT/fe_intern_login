@@ -1,12 +1,17 @@
 import React from 'react'
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const LoginScreens = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
+  
   const handleCheckboxChange = () => {
     setShowPassword(!showPassword);
   };
@@ -18,16 +23,82 @@ const LoginScreens = () => {
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
   };
-
+  
 
   const handleRememberMeChange = () => {
     setRememberMe(!rememberMe);
   };
 
-  const handleLogin = (event) => {
-    event.preventDefault();
+const getAccessToken = () => {
+  return localStorage.getItem('accessToken');
+};
 
-    // Xử lý logic đăng nhập
+const setAccessToken = (accessToken) => {
+  localStorage.setItem('accessToken', accessToken);
+};
+
+const getRefreshToken = () => {
+  return localStorage.getItem('refreshToken');
+};
+
+const setRefreshToken = (refreshToken) => {
+  localStorage.setItem('refreshToken', refreshToken);
+};
+
+const refreshAccessToken = async () => {
+  const refreshToken = getRefreshToken();
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  };
+
+  try {
+    const response = await axios.post('https://hochiminh.mobifone.vn/luongAMGP/auth/refresh-token', {
+      refreshToken: refreshToken
+    }, config);
+
+    const newAccessToken = response.data.accessToken;
+    setAccessToken(newAccessToken);
+
+    return newAccessToken;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Lỗi khi làm mới access token');
+  }
+};
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    setMessage('');
+
+    const config = {
+      headers:{
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    };
+
+    try {
+      const response = await axios.post('https://hochiminh.mobifone.vn/luongAMGP/auth/login', {
+        username: username,
+        password: password
+      }, config);
+  
+      const { accessToken, refreshToken } = response.data;
+  
+      setMessage("Bạn đã đăng nhập thành công");
+      console.log(response);
+      navigate('/');
+
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
+    } catch (error) {
+      console.log(error);
+      setMessage("Đăng nhập thất bại");
+    }
 
     // Lưu trữ tài khoản và mật khẩu nếu checkbox được đánh dấu
     if (rememberMe) {
@@ -38,7 +109,7 @@ const LoginScreens = () => {
       localStorage.removeItem('password');
     }
 
-    // Tiếp tục xử lý đăng nhập
+   
   };
 
   // Kiểm tra nếu có thông tin đăng nhập được lưu trữ
@@ -89,7 +160,7 @@ const LoginScreens = () => {
                 value={password}
                 onChange={handlePasswordChange}/>
         </div>
-
+        <label className='error'>{message}</label>
         <div>
           <button>Quên mật khẩu</button>
         </div>
