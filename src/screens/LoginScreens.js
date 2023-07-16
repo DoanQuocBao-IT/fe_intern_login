@@ -69,10 +69,37 @@ const LoginScreens = () => {
     setRememberMe(!rememberMe);
   };
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
 
-    // Xử lý logic đăng nhập
+    setMessage('');
+
+    const config = {
+      headers:{
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    };
+
+    try {
+      const response = await axios.post('https://hochiminh.mobifone.vn/luongAMGP/auth/login', {
+        username: username,
+        password: password
+      }, config);
+  
+      const { accessToken, refreshToken } = response.data;
+  
+      setMessage("Bạn đã đăng nhập thành công");
+      console.log(response);
+      navigate('/loginsuccess');
+
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
+    }catch (error) {
+      console.log(error);
+      setMessage("Đăng nhập thất bại");
+    }
+
 
     // Lưu trữ tài khoản và mật khẩu nếu checkbox được đánh dấu
     if (rememberMe) {
