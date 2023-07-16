@@ -2,12 +2,59 @@ import React from 'react'
 import { useState } from 'react';
 import { Button, Input, Form, Checkbox, Image } from 'antd';
 import {GooglePlusOutlined,UserOutlined,LockOutlined} from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+export const getAccessToken = () => {
+  return localStorage.getItem('accessToken');
+};
+
+export const setAccessToken = (accessToken) => {
+  localStorage.setItem('accessToken', accessToken);
+};
+
+export const getRefreshToken = () => {
+  return localStorage.getItem('refreshToken');
+};
+
+export const setRefreshToken = (refreshToken) => {
+  localStorage.setItem('refreshToken', refreshToken);
+};
+
+export const refreshAccessToken = async () => {
+  const refreshToken = getRefreshToken();
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  };
+
+  try {
+    const response = await axios.post('https://hochiminh.mobifone.vn/luongAMGP/auth/refresh-token', {
+      refreshToken: refreshToken
+    }, config);
+
+    const newAccessToken = response.data.accessToken;
+    setAccessToken(newAccessToken);
+
+    return newAccessToken;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Lỗi khi làm mới access token');
+  }
+};
 
 const LoginScreens = () => {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
 
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+
+  
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
@@ -90,7 +137,7 @@ const LoginScreens = () => {
                   onChange={handlePasswordChange}/>
             <Button type='link'>Forgot password</Button>
           </Form.Item>
-
+          <label className='error'>{message}</label>
           
           <Form.Item>
             <label>
