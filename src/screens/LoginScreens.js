@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button, Input, Form, Checkbox, Image } from 'antd';
 import {GooglePlusOutlined,UserOutlined,LockOutlined} from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import  {apiInstance}  from '../Instance';
 
 export const getAccessToken = () => {
   return localStorage.getItem('accessToken');
@@ -24,17 +24,10 @@ export const setRefreshToken = (refreshToken) => {
 export const refreshAccessToken = async () => {
   const refreshToken = getRefreshToken();
 
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    }
-  };
-
   try {
-    const response = await axios.post('https://hochiminh.mobifone.vn/luongAMGP/auth/refresh-token', {
+    const response = await apiInstance.post('/auth/refresh-token', {
       refreshToken: refreshToken
-    }, config);
+    });
 
     const newAccessToken = response.data.accessToken;
     setAccessToken(newAccessToken);
@@ -71,35 +64,26 @@ const LoginScreens = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-
     setMessage('');
 
-    const config = {
-      headers:{
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    };
-
     try {
-      const response = await axios.post('https://hochiminh.mobifone.vn/luongAMGP/auth/login', {
+      const response = await apiInstance.post('/auth/login', {
         username: username,
         password: password
-      }, config);
+      });
   
       const { accessToken, refreshToken } = response.data;
-  
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
+      
       setMessage("Bạn đã đăng nhập thành công");
       console.log(response);
       navigate('/loginsuccess');
 
-      setAccessToken(accessToken);
-      setRefreshToken(refreshToken);
-    }catch (error) {
+    } catch (error) {
       console.log(error);
       setMessage("Đăng nhập thất bại");
     }
-
 
     // Lưu trữ tài khoản và mật khẩu nếu checkbox được đánh dấu
     if (rememberMe) {
@@ -108,9 +92,7 @@ const LoginScreens = () => {
     } else {
       localStorage.removeItem('username');
       localStorage.removeItem('password');
-    }
-
-    // Tiếp tục xử lý đăng nhập
+    }  
   };
   const handleResetPassword =() => {
     navigate('/reset-password');

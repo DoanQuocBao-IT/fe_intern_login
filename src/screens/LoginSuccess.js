@@ -1,8 +1,8 @@
 import React from 'react';
-import { useState,useEffect } from 'react'; 
-import { getAccessToken, refreshAccessToken } from './LoginScreens';
-import axios from 'axios';
+import { useState, useEffect } from 'react'; 
+import { getAccessToken } from './LoginScreens';
 import { useNavigate } from 'react-router-dom';
+import  {apiInstance}  from '../Instance';
 
 const LoginSuccess = () => {
     const [list,setList] =useState([
@@ -15,40 +15,21 @@ const LoginSuccess = () => {
     const [show, setShow] = useState(false);
 
     const accessToken = getAccessToken();
-
+    
     useEffect(() => {
         if (!accessToken) {
           navigate('/login');
         }
       }, []);
-    
     const handleClick = async (e) => {
         e.preventDefault();
         setShow(!show);
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${accessToken}` 
-            }
-        };
+        
         try {
-            const response = await axios.get('https://hochiminh.mobifone.vn/luongAMGP/shop/find', config);
+            const response = await apiInstance.get('/shop/find');
             setList(response.data);
-        } catch (error) {
-            if (error.response && error.response.status === 401) {
-            try {
-                const newAccessToken = await refreshAccessToken();
-                config.headers.Authorization = `Bearer ${newAccessToken}`;
-                const response = await axios.get('https://hochiminh.mobifone.vn/luongAMGP/shop/find', config);
-                console.log("data:  "+response.data);
-                setList(response.data);
-            } catch (error) {
-                console.log(error);   
-            }
-            } else {
-            console.log(error);         
-            }
+        } catch (error) {          
+            navigate('/login');        
         }
     }
     return (
