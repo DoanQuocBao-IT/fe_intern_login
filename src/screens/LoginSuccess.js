@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react'; 
+import { useState,useEffect } from 'react'; 
 import { getAccessToken, refreshAccessToken } from './LoginScreens';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -15,11 +15,13 @@ const LoginSuccess = () => {
     const [show, setShow] = useState(false);
 
     const accessToken = getAccessToken();
-    
-    if (!accessToken) {       
-        navigate('/login');
-    }
 
+    useEffect(() => {
+        if (!accessToken) {
+          navigate('/login');
+        }
+      }, []);
+    
     const handleClick = async (e) => {
         e.preventDefault();
         setShow(!show);
