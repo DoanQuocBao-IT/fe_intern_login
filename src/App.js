@@ -3,6 +3,7 @@ import {BrowserRouter, Route,Routes} from 'react-router-dom'
 import HomeScreens from './screens/HomeScreens';
 import LoginScreens from './screens/LoginScreens';
 import LoginSuccess from './screens/LoginSuccess';
+import ForgotPassword from './screens/ForgotPassword';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path="/" element={<HomeScreens />} />
         <Route path="/login" element={<LoginScreens />} />
         <Route path="/loginsuccess" element={<LoginSuccess />} />
+        <Route path="/reset-password" element={<ForgotPassword />} />
 
       </Routes>
     </BrowserRouter>
