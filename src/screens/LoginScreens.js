@@ -112,7 +112,9 @@ const LoginScreens = () => {
 
     // Tiếp tục xử lý đăng nhập
   };
-
+  const handleResetPassword =() => {
+    navigate('/reset-password');
+  };
   // Kiểm tra nếu có thông tin đăng nhập được lưu trữ
   const storedUsername = localStorage.getItem('username');
   const storedPassword = localStorage.getItem('password');
@@ -129,20 +131,26 @@ const LoginScreens = () => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <Form name="loginForm"
+        <Form 
+        layout="vertical"
+        name="loginForm"
         initialValues={{ remember: true }}
         style={{ width: 300 }}>
-          <h1>Đăng nhập</h1>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <h1 >Đăng nhập</h1>
+          </div>
+          
           <Form.Item>
-            <GooglePlusOutlined />
-            <Button size='large'>Sign in with Google</Button>
+            
+            <Button style={{ width: '100%' }}
+            icon={<GooglePlusOutlined size="large"  style={{ fontSize: '16px', color: 'red' }}/>}
+            size='large'>Sign in with Google</Button>
           </Form.Item>
 
           <Form.Item label="Username"
           name="username"
           rules={[{ required: true, message: 'Please input your username!' }]}>
             <Input size="large" prefix={<UserOutlined />}
-                isRequired={true}
                 variant='auth'
                 type='email'
                 placeholder='mail@simmmple.com'
@@ -156,18 +164,16 @@ const LoginScreens = () => {
           name="password"
           rules={[{ required: true, message: 'Please input your password!' }]}>
             <Input.Password size="large" prefix={<LockOutlined />}
-                  isRequired={true}
                   placeholder='Min. 8 characters'
                   variant='auth' 
                   id="password"
                   value={password}
                   onChange={handlePasswordChange}/>
-            <Button type='link'>Forgot password</Button>
+            
           </Form.Item>
           <label className='error'>{message}</label>
-          
           <Form.Item>
-            <label>
+            <label >
               <Checkbox
                 name="remember"
                 checked={rememberMe}
@@ -175,17 +181,18 @@ const LoginScreens = () => {
               />
               Keep me logged in
             </label>
+            <Button type='link' style={{ float: 'right' , color: 'red' }} onClick={handleResetPassword}>Forgot password</Button>
+
           </Form.Item>
-        
           <Form.Item>
-            <Button type='primary' size='large'
+            <Button type='primary' size='large' style={{ width: '100%' }}
             onClick={handleLogin}>Sign in</Button>
           </Form.Item>
           
           
           <Form.Item>
             <label>Not registered yet?</label>
-            <Button type='link'>Create an Account</Button>
+            <Button type='link' style={{  color: 'red' }}>Create an Account</Button>
           </Form.Item>
         </Form>
       </div>
