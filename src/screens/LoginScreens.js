@@ -5,6 +5,11 @@ import {GooglePlusOutlined,UserOutlined,LockOutlined} from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import  {apiInstance}  from '../Instance';
 import { AppContext } from '..';
+import axios from 'axios';
+import RegisterScreen from './RegisterScreen';
+import { Link } from 'react-router-dom';
+
+
 
 export const getAccessToken = () => {
   return localStorage.getItem('accessToken');
@@ -47,8 +52,12 @@ const LoginScreens = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const {load, notify} = useContext(AppContext);
+  const [showRegister, setShowRegister] = useState(false);
 
-  
+  const handleShowRegister = () => {
+    setShowRegister(true);
+  };
+
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
@@ -113,6 +122,7 @@ const LoginScreens = () => {
       setRememberMe(true);
     }
   }, [hasStoredCredentials, storedUsername, storedPassword]);
+
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -180,9 +190,6 @@ const LoginScreens = () => {
         {loading && load}
       </div>
 
-      
-    </div>
-  )
 }
 
 export default LoginScreens
