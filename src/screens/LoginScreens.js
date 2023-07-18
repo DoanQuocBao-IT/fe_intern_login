@@ -1,9 +1,10 @@
 import React from 'react'
-import { useState } from 'react';
-import { Button, Input, Form, Checkbox, Image,Alert, Space, Spin } from 'antd';
+import { useState, useContext } from 'react';
+import { Button, Input, Form, Checkbox, Image,Alert, Space } from 'antd';
 import {GooglePlusOutlined,UserOutlined,LockOutlined} from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import  {apiInstance}  from '../Instance';
+import { AppContext } from '..';
 
 export const getAccessToken = () => {
   return localStorage.getItem('accessToken');
@@ -44,9 +45,8 @@ const LoginScreens = () => {
   const [username, setUsername] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const {load, notify} = useContext(AppContext);
 
   
 
@@ -65,7 +65,6 @@ const LoginScreens = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    setMessage('');
     setLoading(true);
 
     try {
@@ -78,14 +77,14 @@ const LoginScreens = () => {
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
       
-      setMessage("Bạn đã đăng nhập thành công");
       console.log(response);
       setLoading(false);
       navigate('/loginsuccess');
 
-    } catch (error) {
-      console.log(error);
-      setMessage("Đăng nhập thất bại");
+    } catch (error) {     
+        notify("Đăng nhập thất bại");
+    }
+    finally {
       setLoading(false);
     }
 
@@ -144,18 +143,6 @@ const LoginScreens = () => {
                 value={username}
                 onChange={handleUsernameChange}/>
           </Form.Item>
-
-          {loading ? (
-          <Space direction="vertical" style={{ width: '100%' }}>
-            <Spin tip="Loading" size="large">
-              <div className="content" />
-            </Spin>
-          </Space>
-          ) : (
-            <div>
-              {/* Nội dung hiển thị sau khi tải xong */}
-            </div>
-          )}
           <Form.Item label="Password" 
           name="password"
           rules={[{ required: true, message: 'Please input your password!' }]}>
@@ -164,10 +151,9 @@ const LoginScreens = () => {
                   variant='auth' 
                   id="password"
                   value={password}
-                  onChange={handlePasswordChange}/>
+                  onChange={handlePasswordChange}/>    
             
           </Form.Item>
-          <label className='error'>{message}</label>
           <Form.Item>
             <label >
               <Checkbox
@@ -191,6 +177,7 @@ const LoginScreens = () => {
             <Button type='link' style={{  color: 'red' }}>Create an Account</Button>
           </Form.Item>
         </Form>
+        {loading && load}
       </div>
 
       
