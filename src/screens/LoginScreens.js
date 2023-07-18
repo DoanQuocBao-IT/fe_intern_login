@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
-import { Button, Input, Form, Checkbox, Image } from 'antd';
+import { Button, Input, Form, Checkbox, Image,Alert, Space, Spin } from 'antd';
 import {GooglePlusOutlined,UserOutlined,LockOutlined} from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import  {apiInstance}  from '../Instance';
@@ -43,6 +43,7 @@ const LoginScreens = () => {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -65,6 +66,7 @@ const LoginScreens = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
     setMessage('');
+    setLoading(true);
 
     try {
       const response = await apiInstance.post('/auth/login', {
@@ -78,11 +80,13 @@ const LoginScreens = () => {
       
       setMessage("Bạn đã đăng nhập thành công");
       console.log(response);
+      setLoading(false);
       navigate('/loginsuccess');
 
     } catch (error) {
       console.log(error);
       setMessage("Đăng nhập thất bại");
+      setLoading(false);
     }
 
     // Lưu trữ tài khoản và mật khẩu nếu checkbox được đánh dấu
@@ -141,7 +145,17 @@ const LoginScreens = () => {
                 onChange={handleUsernameChange}/>
           </Form.Item>
 
-        
+          {loading ? (
+          <Space direction="vertical" style={{ width: '100%' }}>
+            <Spin tip="Loading" size="large">
+              <div className="content" />
+            </Spin>
+          </Space>
+          ) : (
+            <div>
+              {/* Nội dung hiển thị sau khi tải xong */}
+            </div>
+          )}
           <Form.Item label="Password" 
           name="password"
           rules={[{ required: true, message: 'Please input your password!' }]}>
