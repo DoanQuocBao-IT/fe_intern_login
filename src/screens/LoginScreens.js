@@ -15,8 +15,7 @@ export const setAccessToken = (accessToken) => {
 };
 
 export const getRefreshToken = () => {
-  // return localStorage.getItem('refreshToken');
-  return "dsfdrfggd";
+   return localStorage.getItem('refreshToken');
 };
 
 export const setRefreshToken = (refreshToken) => {
@@ -50,15 +49,13 @@ const LoginScreens = () => {
   const navigate = useNavigate();
   const {load} = useContext(LoadContext);
   const notify =useContext(NotifyContext);
- const mess = localStorage.getItem('message');
- console.log("mess: "+mess)
  
   useEffect(()=>{
     if(message)
     {
-      notify(mess);
+      notify("Đăng nhập thất bại");
     }
-  },[message,mess])
+  },[message])
   
   
   const handlePasswordChange = (event) => {

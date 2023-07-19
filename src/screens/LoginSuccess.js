@@ -16,11 +16,11 @@ const LoginSuccess = () => {
     const [show, setShow] = useState(false);
     const accessToken = getAccessToken();
     
-    // useEffect(() => {
-    //     if (!accessToken) {
-    //       navigate('/login');
-    //     }
-    //   }, []);
+    useEffect(() => {
+        if (!accessToken) {
+          navigate('/login');
+        }
+      }, []);
     const handleClick = async (e) => {
         e.preventDefault();
         setShow(!show);

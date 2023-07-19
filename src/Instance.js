@@ -40,7 +40,6 @@ export const apiInstance = axios.create({
             error.headers.Authorization = `Bearer ${newAccessToken}`;
             return apiInstance(error);       
           } catch (Error) { 
-            localStorage.setItem('message',"Phiên làm việc hết hạn");
             window.location.href = '/login';    
           }
         }
