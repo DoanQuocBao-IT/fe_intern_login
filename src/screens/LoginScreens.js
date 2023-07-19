@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState, useContext } from 'react';
 import { Button, Input, Form, Checkbox, Image,Alert, Space } from 'antd';
 import {GooglePlusOutlined,UserOutlined,LockOutlined} from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import  {apiInstance}  from '../Instance';
-import { AppContext } from '..';
+import { LoadContext, NotifyContext } from '..';
 
 export const getAccessToken = () => {
   return localStorage.getItem('accessToken');
@@ -15,7 +15,8 @@ export const setAccessToken = (accessToken) => {
 };
 
 export const getRefreshToken = () => {
-  return localStorage.getItem('refreshToken');
+  // return localStorage.getItem('refreshToken');
+  return "dsfdrfggd";
 };
 
 export const setRefreshToken = (refreshToken) => {
@@ -45,11 +46,21 @@ const LoginScreens = () => {
   const [username, setUsername] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(false);
   const navigate = useNavigate();
-  const {load, notify} = useContext(AppContext);
-
+  const {load} = useContext(LoadContext);
+  const notify =useContext(NotifyContext);
+ const mess = localStorage.getItem('message');
+ console.log("mess: "+mess)
+ 
+  useEffect(()=>{
+    if(message)
+    {
+      notify(mess);
+    }
+  },[message,mess])
   
-
+  
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
@@ -66,6 +77,7 @@ const LoginScreens = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
     setLoading(true);
+    setMessage(false);
 
     try {
       const response = await apiInstance.post('/auth/login', {
@@ -82,7 +94,7 @@ const LoginScreens = () => {
       navigate('/loginsuccess');
 
     } catch (error) {     
-        notify("Đăng nhập thất bại");
+      setMessage(true);
     }
     finally {
       setLoading(false);

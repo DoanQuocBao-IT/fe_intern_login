@@ -1,5 +1,9 @@
 import { getAccessToken, getRefreshToken, refreshAccessToken } from './screens/LoginScreens';
 import axios from 'axios';
+import { AppContext } from './index';
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 export const apiInstance = axios.create({
     baseURL: 'https://hochiminh.mobifone.vn/luongAMGP',
@@ -27,18 +31,23 @@ export const apiInstance = axios.create({
     (response) => {
       return response;
     },
-    async (error) => {
+    async (error) => {    
       if (error.response.status === 401 ) {
         const refreshToken = getRefreshToken();
         if (refreshToken) {
           try {
             const newAccessToken = await refreshAccessToken(refreshToken);      
             error.headers.Authorization = `Bearer ${newAccessToken}`;
-            return apiInstance(error);           
-          } catch (Error) {
-            console.log(Error);
+            return apiInstance(error);       
+          } catch (Error) { 
+            localStorage.setItem('message',"Phiên làm việc hết hạn");
+            window.location.href = '/login';    
           }
         }
+        else {
+          localStorage.setItem('message',"Phiên làm việc hết hạn");
+           window.location.href = '/login';        
+        }            
       }
       return Promise.reject(error);
     }

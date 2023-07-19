@@ -5,7 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ConfigProvider, Spin, notification } from 'antd';
 
-export const AppContext = React.createContext({});
+export const LoadContext = React.createContext({});
+export const NotifyContext = React.createContext({});
 
 const Loading = () => {
   return (
@@ -29,12 +30,12 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ConfigProvider theme={{ token: { colorPrimary: '#FF0000' } }}>
     <React.StrictMode>
-      <AppContext.Provider 
-        value={{load :<Loading />, 
-                notify:handleNotification}}
-        >
-        <App />
-      </AppContext.Provider>
+      <LoadContext.Provider 
+        value={{ load: <Loading /> }}>
+      <NotifyContext.Provider value={handleNotification}>
+          <App />
+      </NotifyContext.Provider>
+      </LoadContext.Provider>
     </React.StrictMode>
   </ConfigProvider>
   
