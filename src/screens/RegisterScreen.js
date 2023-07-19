@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Input, Form, Checkbox, Image } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { Button, Input, Form} from 'antd';
+import { UserOutlined, LockOutlined,BarcodeOutlined,ContactsOutlined,MailOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
@@ -56,14 +56,14 @@ const RegisterScreen = () => {
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 {/* <Form name="registerForm" style={{ width: 300 }}> */}
-                <Form name="registerForm" form={form} style={{ width: 300 }}>
+                <Form layout="vertical"
+                name="registerForm" form={form} style={{ width: 300 }}>
                     <h1>Đăng ký tài khoản</h1>
 
                     <Form.Item label="Username" name="username" rules={[{ required: true, message: 'Please input your username!' }]}>
                         <Input
                             size="large"
                             prefix={<UserOutlined />}
-                            isRequired={true}
                             variant='auth'
                             type='email'
                             placeholder='mail@simmmple.com'
@@ -76,7 +76,6 @@ const RegisterScreen = () => {
                         <Input.Password
                             size="large"
                             prefix={<LockOutlined />}
-                            isRequired={true}
                             placeholder='Min. 8 characters'
                             variant='auth'
                             id="password"
@@ -84,24 +83,33 @@ const RegisterScreen = () => {
                             onChange={handlePasswordChange}
                         />
                     </Form.Item>
-                    <Form.Item label="Name" name="name">
-                        <Input value={name} onChange={(e) => setName(e.target.value)} />
+                    <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input your name!' }]}>
+                        <Input size="large" 
+                        prefix={<ContactsOutlined />}
+                        value={name} onChange={(e) => setName(e.target.value)} />
                     </Form.Item>
-                    <Form.Item label="Email" name="email">
-                        <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <Form.Item label="Email" name="email" rules={[{ required: true, message: 'Please input your email!' }]}>
+                        <Input size="large" 
+                        prefix={<MailOutlined />}
+                        value={email} onChange={(e) => setEmail(e.target.value)} />
                     </Form.Item>
-                    <Form.Item label="telNumber" name="telNumber">
-                        <Input value={telNumber} onChange={(e) => setTelNumber(e.target.value)} />
+                    <Form.Item label="telNumber" name="telNumber" rules={[{ required: true, message: 'Please input your telNumber!' }]}>
+                        <Input size="large" 
+                        prefix={<ContactsOutlined />}
+                        value={telNumber} onChange={(e) => setTelNumber(e.target.value)} />
                     </Form.Item>
-                    <Form.Item label="empCode" name="empCode">
-                        <Input value={empCode} onChange={(e) => setEmpCode(e.target.value)} />
+                    <Form.Item label="empCode" name="empCode" rules={[{ required: true, message: 'Please input your empCode!' }]}>
+                        <Input size="large" 
+                        prefix={<BarcodeOutlined />}
+                        value={empCode} onChange={(e) => setEmpCode(e.target.value)} />
                     </Form.Item>
                     <Form.Item>
                         <label className='error'>{message}</label>
                     </Form.Item>
 
                     <Form.Item>
-                        <Button type='primary' size='large' onClick={handleRegister}>
+                        <Button type='primary' size='large' style={{ width: '100%' }}
+                        onClick={handleRegister}>
                             Sign up
                         </Button>
                     </Form.Item>

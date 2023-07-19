@@ -109,6 +109,9 @@ const LoginScreens = () => {
   const handleResetPassword =() => {
     navigate('/reset-password');
   };
+  const handleRegister =() => {
+    navigate('/register');
+  };
   // Kiểm tra nếu có thông tin đăng nhập được lưu trữ
   const storedUsername = localStorage.getItem('username');
   const storedPassword = localStorage.getItem('password');
@@ -184,12 +187,14 @@ const LoginScreens = () => {
           
           <Form.Item>
             <label>Not registered yet?</label>
-            <Button type='link' style={{  color: 'red' }}>Create an Account</Button>
+            <Button type='link' style={{  color: 'red' }}
+            onClick={handleRegister}>Create an Account</Button>
           </Form.Item>
         </Form>
         {loading && load}
       </div>
-
+    </div>
+  )
 }
 
 export default LoginScreens
