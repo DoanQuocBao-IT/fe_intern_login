@@ -48,9 +48,15 @@ const LoginScreens = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(false);
   const navigate = useNavigate();
-  const {load, notify} = useContext(AppContext);
+  const {load} = useContext(LoadContext);
+  const notify = useContext(NotifyContext);
 
-  
+  useEffect(()=>{
+    if(message)
+    {
+      notify("Đăng nhập thất bại","info");
+    }
+  },[message])
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);

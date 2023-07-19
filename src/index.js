@@ -5,7 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import { ConfigProvider } from 'antd';
 import {LoadProvider} from './context/LoadContext'
 import  {NotifyProvider}  from './context/NotifyContext';
-
+import './index.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
