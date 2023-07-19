@@ -4,7 +4,8 @@ import { Button, Input, Form, Checkbox, Image,Alert, Space } from 'antd';
 import {GooglePlusOutlined,UserOutlined,LockOutlined} from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import  {apiInstance}  from '../Instance';
-import { LoadContext, NotifyContext } from '..';
+import { LoadContext } from '../context/LoadContext';
+import { NotifyContext } from '../context/NotifyContext';
 
 export const getAccessToken = () => {
   return localStorage.getItem('accessToken');
@@ -53,7 +54,7 @@ const LoginScreens = () => {
   useEffect(()=>{
     if(message)
     {
-      notify("Đăng nhập thất bại");
+      notify("Đăng nhập thất bại","info");
     }
   },[message])
   

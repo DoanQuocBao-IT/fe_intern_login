@@ -1,8 +1,6 @@
 import { getAccessToken, getRefreshToken, refreshAccessToken } from './screens/LoginScreens';
 import axios from 'axios';
-import { AppContext } from './index';
-import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 
 
 export const apiInstance = axios.create({
