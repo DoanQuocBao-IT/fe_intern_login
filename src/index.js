@@ -6,7 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import { ConfigProvider } from 'antd';
 import {LoadProvider} from './context/LoadContext'
 import  {NotifyProvider}  from './context/NotifyContext';
-
+import store from './store';
+import {Provider} from 'react-redux';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,7 +15,9 @@ root.render(
     <React.StrictMode>
       <NotifyProvider>
         <LoadProvider>
-          <App />
+          <Provider store={store}>
+            <App />
+          </Provider>
         </LoadProvider>
       </NotifyProvider>
     </React.StrictMode>

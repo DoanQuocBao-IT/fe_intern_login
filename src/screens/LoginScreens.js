@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import  {apiInstance}  from '../Instance';
 import { LoadContext } from '../context/LoadContext';
 import { NotifyContext } from '../context/NotifyContext';
+import { handleLogin } from '../actions/loginAction';
 
 export const getAccessToken = () => {
   return localStorage.getItem('accessToken');
