@@ -50,16 +50,15 @@ const LoginScreens = () => {
   const [message, setMessage] = useState(false);
   const navigate = useNavigate();
   const {load} = useContext(LoadContext);
-  const notify =useContext(NotifyContext);
- 
+  const notify = useContext(NotifyContext);
+
   useEffect(()=>{
     if(message)
     {
       notify("Đăng nhập thất bại","info");
     }
   },[message])
-  
-  
+
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
@@ -111,6 +110,9 @@ const LoginScreens = () => {
   const handleResetPassword =() => {
     navigate('/reset-password');
   };
+  const handleRegister =() => {
+    navigate('/register');
+  };
   // Kiểm tra nếu có thông tin đăng nhập được lưu trữ
   const storedUsername = localStorage.getItem('username');
   const storedPassword = localStorage.getItem('password');
@@ -124,6 +126,7 @@ const LoginScreens = () => {
       setRememberMe(true);
     }
   }, [hasStoredCredentials, storedUsername, storedPassword]);
+
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -185,13 +188,12 @@ const LoginScreens = () => {
           
           <Form.Item>
             <label>Not registered yet?</label>
-            <Button type='link' style={{  color: 'red' }}>Create an Account</Button>
+            <Button type='link' style={{  color: 'red' }}
+            onClick={handleRegister}>Create an Account</Button>
           </Form.Item>
         </Form>
         {loading && load}
       </div>
-
-      
     </div>
   )
 }
