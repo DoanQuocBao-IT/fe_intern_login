@@ -1,4 +1,4 @@
-export const handleLogin = (data) => {
+export const handleLoginDispatch = (data) => {
     return {
         type: 'LOGIN',
         payload: data

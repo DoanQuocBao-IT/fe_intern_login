@@ -6,7 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import  {apiInstance}  from '../Instance';
 import { LoadContext } from '../context/LoadContext';
 import { NotifyContext } from '../context/NotifyContext';
-import { handleLogin } from '../actions/loginAction';
+import { handleLoginDispatch } from '../actions/loginAction';
+import {useDispatch} from 'react-redux'
 
 export const getAccessToken = () => {
   return localStorage.getItem('accessToken');
@@ -51,6 +52,7 @@ const LoginScreens = () => {
   const navigate = useNavigate();
   const {load} = useContext(LoadContext);
   const notify = useContext(NotifyContext);
+  const dispatch =useDispatch();
 
   useEffect(()=>{
     if(message)
@@ -72,41 +74,60 @@ const LoginScreens = () => {
     setRememberMe(!rememberMe);
   };
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
+  const handleLogin = async (username, password, remember ) => {
     setLoading(true);
     setMessage(false);
 
     try {
-      const response = await apiInstance.post('/auth/login', {
-        username: username,
-        password: password
-      });
+        dispatch(handleLoginDispatch({
+          username: username,
+          password: password,
+          remember: remember
+        }));
+    }
+    catch (error){
+      setMessage(true)
+    }
+    finally{
+      setLoading(false)
+    }
+  }
+
+  // const handleLogin = async (event) => {
+  //   event.preventDefault();
+  //   setLoading(true);
+  //   setMessage(false);
+
+  //   try {
+  //     const response = await apiInstance.post('/auth/login', {
+  //       username: username,
+  //       password: password
+  //     });
   
-      const { accessToken, refreshToken } = response.data;
-      setAccessToken(accessToken);
-      setRefreshToken(refreshToken);
+  //     const { accessToken, refreshToken } = response.data;
+  //     setAccessToken(accessToken);
+  //     setRefreshToken(refreshToken);
       
-      console.log(response);
-      setLoading(false);
-      navigate('/loginsuccess');
+  //     console.log(response);
+  //     setLoading(false);
+  //     navigate('/loginsuccess');
 
-    } catch (error) {     
-      setMessage(true);
-    }
-    finally {
-      setLoading(false);
-    }
+  //   } catch (error) {     
+  //     setMessage(true);
+  //   }
+  //   finally {
+  //     setLoading(false);
+  //   }
 
-    // Lưu trữ tài khoản và mật khẩu nếu checkbox được đánh dấu
-    if (rememberMe) {
-      localStorage.setItem('username', username);
-      localStorage.setItem('password', password);
-    } else {
-      localStorage.removeItem('username');
-      localStorage.removeItem('password');
-    }  
-  };
+  //   // Lưu trữ tài khoản và mật khẩu nếu checkbox được đánh dấu
+  //   if (rememberMe) {
+  //     localStorage.setItem('username', username);
+  //     localStorage.setItem('password', password);
+  //   } else {
+  //     localStorage.removeItem('username');
+  //     localStorage.removeItem('password');
+  //   }  
+  // };
   const handleResetPassword =() => {
     navigate('/reset-password');
   };
@@ -182,7 +203,7 @@ const LoginScreens = () => {
           </Form.Item>
           <Form.Item>
             <Button type='primary' size='large' style={{ width: '100%' }}
-            onClick={handleLogin}>Sign in</Button>
+            onClick={()=>handleLogin(username, password, rememberMe)}>Sign in</Button>
           </Form.Item>
           
           
