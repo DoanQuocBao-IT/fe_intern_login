@@ -1,8 +1,9 @@
 import React from 'react';
-import { useState, useEffect } from 'react'; 
+import { useState, useEffect, useContext } from 'react'; 
 import { getAccessToken } from './LoginScreens';
 import { useNavigate } from 'react-router-dom';
 import  {apiInstance}  from '../Instance';
+import { AppContext } from '..';
 
 const LoginSuccess = () => {
     const [list,setList] =useState([
@@ -13,7 +14,6 @@ const LoginSuccess = () => {
     ]);
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
-
     const accessToken = getAccessToken();
     
     useEffect(() => {
@@ -28,8 +28,8 @@ const LoginSuccess = () => {
         try {
             const response = await apiInstance.get('/shop/find');
             setList(response.data);
-        } catch (error) {          
-            navigate('/login');        
+        } catch (error) {   
+    
         }
     }
     return (
