@@ -22,9 +22,11 @@ function App() {
         <Route path="/login" element={<LoginScreens />} />
         <Route path="/loginsuccess" element={<LoginSuccess />} />
         <Route path="/reset-password" element={<ForgotPassword />} />
+        <Route path="/register" element={<RegisterScreen />} />
+
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

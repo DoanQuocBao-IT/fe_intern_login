@@ -1,15 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ConfigProvider } from 'antd';
+import {LoadProvider} from './context/LoadContext'
+import  {NotifyProvider}  from './context/NotifyContext';
+import './index.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ConfigProvider theme={{ token: { colorPrimary: '#FF0000' } }}>
     <React.StrictMode>
-      <App />
+      <NotifyProvider>
+        <LoadProvider>
+          <App />
+        </LoadProvider>
+      </NotifyProvider>
     </React.StrictMode>
   </ConfigProvider>
   

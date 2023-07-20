@@ -1,10 +1,36 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { getAccessToken } from "./LoginScreens";
 import { useNavigate } from "react-router-dom";
 import { apiInstance } from "../Instance";
+import { AppContext } from '..';
 
 const LoginSuccess = () => {
+    const [list,setList] =useState([
+        {
+            code: '',
+            name:'',
+        }
+    ]);
+    const navigate = useNavigate();
+    const [show, setShow] = useState(false);
+    const accessToken = getAccessToken();
+    
+    useEffect(() => {
+        if (!accessToken) {
+          navigate('/login');
+        }
+      }, []);
+    const handleClick = async (e) => {
+        e.preventDefault();
+        setShow(!show);
+        
+        try {
+            const response = await apiInstance.get('/shop/find');
+            setList(response.data);
+        } catch (error) {   
+    
+        }
   const [list, setList] = useState([
     {
       code: "",
@@ -33,7 +59,7 @@ const LoginSuccess = () => {
     } catch (error) {
       navigate("/login");
     }
-  };
+  
 
   return (
     <div>
