@@ -14,7 +14,7 @@ const Homepage = ({events}) => {
     <Carousel autoplay>
       {events.map((event, index) => (
         <div key={index}>
-          <img src={event.image} alt={`Image ${index + 1}`} style={{ width: '100%', height: '400px', objectFit: 'cover' }} />
+          <img className='img' src={event.image} alt={`Image ${index + 1}`} style={{ width: '100%', height: '400px', objectFit: 'cover' }} />
         </div>
       ))}
     </Carousel>

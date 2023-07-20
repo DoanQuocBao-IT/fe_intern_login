@@ -14,10 +14,18 @@ const HomeScreens = () => {
   return (
     <div>
       <HeaderPage/>
-      <h1>Trang chủ</h1>
-      <Homepage events={homepage}/>
-      <Community events={community}/>
-      <Enterprise events={enterprise}/>
+      
+      <div className='center'>
+        <h1>Trang chủ</h1>
+        <Homepage events={homepage}/>
+        <div >
+          <Community events={community}/>
+          <Enterprise events={enterprise}/>
+        </div>
+        
+        
+      </div>
+
       <FooterPage/>
     </div>
   );
