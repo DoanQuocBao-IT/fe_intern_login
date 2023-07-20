@@ -1,20 +1,32 @@
-body{
+.container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+body {
   margin: 0;
 }
+
 @media (min-width: 1025px) {
   .h-custom-2 {
     height: 100%;
-    }
   }
+}
+
 .custom-submenu .ant-menu-sub {
-    border-radius: 0;
+  border-radius: 0;
 }
+
 .ant-menu-dark .ant-menu-item:hover {
-  border: 1px solid white; /* Màu và kiểu viền khi hover vào item */
+  border: 1px solid white;
+  /* Màu và kiểu viền khi hover vào item */
 }
+
 .custom-submenu-container:hover {
-  border: 1px solid white; /* Màu và kiểu viền khi hover vào submenu */
+  border: 1px solid white;
+  /* Màu và kiểu viền khi hover vào submenu */
 }
+
 .logo img {
   margin-top: 25px;
   width: 100px;
