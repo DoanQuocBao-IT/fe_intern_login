@@ -1,5 +1,6 @@
 import React from "react";
 import { Table } from "antd";
+
 const SideBar = ({ title, tableData, tableColumns }) => {
   return (
     <div>

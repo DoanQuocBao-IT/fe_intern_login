@@ -1,14 +1,18 @@
 import React from "react";
-import { Button, Row, Col } from "antd";
+import { Row, Col } from "antd";
+import "../../App.css";
 
 const Community = ({ events }) => {
   return (
     <div>
       <h2>Giải chạy cộng đồng</h2>
-      <Row gutter={[16, 16]}>
-        <Col span={12} lg={6} md={12} sm={24}>
+      <Row justify="space-around" align="middle">
+        <Col lg={12} md={12} xs={24}>
           {events.slice(0, 2).map((event, index) => (
-            <button className="button" key={index} style={{ marginBottom: "10px", width: "100%" }}>
+            <button
+              className="button"
+              key={index}
+              style={{ marginBottom: "10px", width: "100%", textAlign: "left" }}>
               <img
                 className="img"
                 src={event.image}
@@ -19,7 +23,7 @@ const Community = ({ events }) => {
             </button>
           ))}
         </Col>
-        <Col span={12} lg={6} md={12} sm={24}>
+        <Col lg={12} md={12} xs={24}>
           {events.slice(2, 4).map((event, index) => (
             <button
               className="button"
