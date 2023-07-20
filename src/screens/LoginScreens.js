@@ -3,10 +3,11 @@ import { useState, useContext } from 'react';
 import { Button, Input, Form, Checkbox, Image,Alert, Space } from 'antd';
 import {GooglePlusOutlined,UserOutlined,LockOutlined} from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { useObserver } from 'mobx-react-lite';
 import  {apiInstance}  from '../Instance';
 import { LoadContext } from '../context/LoadContext';
 import { NotifyContext } from '../context/NotifyContext';
-
+import { DataContext } from '../data/DataProvider';
 export const getAccessToken = () => {
   return localStorage.getItem('accessToken');
 };
@@ -50,7 +51,8 @@ const LoginScreens = () => {
   const navigate = useNavigate();
   const {load} = useContext(LoadContext);
   const notify = useContext(NotifyContext);
-
+  const {store}  = useContext(DataContext);
+  const {authStore, itemStore} = store;
   useEffect(()=>{
     if(message)
     {
@@ -82,13 +84,14 @@ const LoginScreens = () => {
         password: password
       });
   
-      const { accessToken, refreshToken } = response.data;
+      const { accessToken, refreshToken, userInfo} = response.data;
+      authStore.isAuthenticated = true;
+      authStore.login(userInfo.user_name);
+      
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
-      
-      console.log(response);
       setLoading(false);
-      navigate('/loginsuccess');
+      navigate('/');
 
     } catch (error) {     
       setMessage(true);
@@ -126,7 +129,7 @@ const LoginScreens = () => {
     }
   }, [hasStoredCredentials, storedUsername, storedPassword]);
 
-  return (
+  return useObserver(() =>(
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <Form 
@@ -194,7 +197,7 @@ const LoginScreens = () => {
         {loading && load}
       </div>
     </div>
-  )
+  ))
 }
 
 export default LoginScreens
