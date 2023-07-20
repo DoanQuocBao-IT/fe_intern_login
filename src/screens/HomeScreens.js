@@ -9,7 +9,6 @@ import Community from "./activities/Community";
 import Enterprise from "./activities/Enterprise";
 import { SidebarTable } from "../data/SidebarTable";
 import SideBar from "./activities/SideBar";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const { TabPane } = Tabs;
 const HomeScreens = () => {
@@ -122,17 +121,12 @@ const HomeScreens = () => {
                     <tbody>
                       <hr></hr>
                       <tr className="table-items">
-                        <td>
-                          <FontAwesomeIcon icon="fa-regular fa-user" />
-                          Thành viên
-                        </td>
+                        <td>Thành viên</td>
                         <td> 134214 km</td>
                       </tr>
                       <hr></hr>
                       <tr className="table-items">
-                        <td>
-                          <FontAwesomeIcon icon="fa-regular fa-person-running" /> Số km đã chạy
-                        </td>
+                        <td>Số km đã chạy</td>
                         <td> 134214 km</td>
                       </tr>
                       <hr></hr>
