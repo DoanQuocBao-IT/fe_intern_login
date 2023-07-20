@@ -4,7 +4,7 @@ import { Table } from "antd";
 const SideBar = ({ title, tableData, tableColumns }) => {
   return (
     <div>
-      <h3> {title}</h3>
+      <h2> {title}</h2>
       <Table
         style={{ width: "100%" }}
         dataSource={tableData}

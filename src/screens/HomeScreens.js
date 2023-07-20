@@ -1,6 +1,5 @@
 import React from "react";
 import "../App.css";
-
 import HeaderPage from "./header/HeaderPage";
 import FooterPage from "./footer/FooterPage";
 import Home from "../data/Home";
@@ -10,6 +9,8 @@ import Community from "./activities/Community";
 import Enterprise from "./activities/Enterprise";
 import { SidebarTable } from "../data/SidebarTable";
 import SideBar from "./activities/SideBar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 const { TabPane } = Tabs;
 const HomeScreens = () => {
   const { homepage, community, enterprise } = Home;
@@ -47,7 +48,27 @@ const HomeScreens = () => {
     },
   ];
 
-  const clubTableColumns = [];
+  const clubTableColumns = [
+    {
+      title: "Ten CLB",
+      colSpans: 2,
+      dataIndex: "ImageURL",
+      key: "ImageURL",
+      render: (ImageURL) => <img src={ImageURL} alt="Data" style={{ width: "100px" }} />,
+    },
+
+    {
+      colSpans: 0,
+      dataIndex: "name",
+      key: "name",
+    },
+
+    {
+      title: "Km",
+      dataIndex: "distance",
+      key: "distance",
+    },
+  ];
   return (
     <div>
       <HeaderPage />
@@ -63,6 +84,8 @@ const HomeScreens = () => {
               <Enterprise events={enterprise} />
             </div>
           </Col>
+
+          {/* Table SideBar Homepage */}
           <Col xs={24} lg={6} md={8}>
             <div>
               <h2>Bang xep hang</h2>
@@ -84,6 +107,48 @@ const HomeScreens = () => {
                     tableColumns={rankTableColumns}></SideBar>{" "}
                 </TabPane>
               </Tabs>
+
+              <div>
+                <SideBar
+                  title="Ten CLB"
+                  tableData={clubTableData}
+                  tableColumns={clubTableColumns}></SideBar>
+              </div>
+
+              <div>
+                <h2>Thống Kê</h2>
+                <div>
+                  <table style={{ width: "100%" }}>
+                    <tbody>
+                      <hr></hr>
+                      <tr className="table-items">
+                        <td>
+                          <FontAwesomeIcon icon="fa-regular fa-user" />
+                          Thành viên
+                        </td>
+                        <td> 134214 km</td>
+                      </tr>
+                      <hr></hr>
+                      <tr className="table-items">
+                        <td>
+                          <FontAwesomeIcon icon="fa-regular fa-person-running" /> Số km đã chạy
+                        </td>
+                        <td> 134214 km</td>
+                      </tr>
+                      <hr></hr>
+                      <tr className="table-items">
+                        <td>Số câu lạc bộ</td>
+                        <td> 134214 km</td>
+                      </tr>
+                      <hr></hr>
+                      <tr className="table-items">
+                        <td>Số giải chạy</td>
+                        <td> 134214 km</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </Col>
         </Row>
