@@ -1,46 +1,29 @@
 import React, { useEffect } from 'react'
 import { useState, useContext } from 'react';
-import { Button, Input, Form, Checkbox, Image,Alert, Space } from 'antd';
+import { Button, Input, Form, Checkbox } from 'antd';
 import {GooglePlusOutlined,UserOutlined,LockOutlined} from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import  {apiInstance}  from '../Instance';
 import { LoadContext } from '../context/LoadContext';
 import { NotifyContext } from '../context/NotifyContext';
-import { handleLoginDispatch } from '../actions/loginAction';
 import {useDispatch} from 'react-redux'
+import { loginSuccess } from '../actions/refreshTokenAction';
 
 export const getAccessToken = () => {
-  return localStorage.getItem('accessToken');
-};
-
-export const setAccessToken = (accessToken) => {
-  localStorage.setItem('accessToken', accessToken);
+  return localStorage.getItem('');
 };
 
 export const getRefreshToken = () => {
-   return localStorage.getItem('refreshToken');
+  return localStorage.getItem('refreshToken');
 };
 
-export const setRefreshToken = (refreshToken) => {
-  localStorage.setItem('refreshToken', refreshToken);
-};
-
-export const refreshAccessToken = async () => {
-  const refreshToken = getRefreshToken();
-
-  try {
-    const response = await apiInstance.post('/auth/refresh-token', {
-      refreshToken: refreshToken
-    });
-
-    const newAccessToken = response.data.accessToken;
-    setAccessToken(newAccessToken);
-
-    return newAccessToken;
-  } catch (error) {
-    console.log(error);
-    throw new Error('Lỗi khi làm mới access token');
-  }
+export const refreshAccessToken = async (form) => {
+  apiInstance.post('/auth/refresh-token',form,{
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Accept': 'application/json',
+    }
+  })
 };
 
 const LoginScreens = () => {
@@ -52,7 +35,7 @@ const LoginScreens = () => {
   const navigate = useNavigate();
   const {load} = useContext(LoadContext);
   const notify = useContext(NotifyContext);
-  const dispatch =useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(()=>{
     if(message)
@@ -74,60 +57,43 @@ const LoginScreens = () => {
     setRememberMe(!rememberMe);
   };
 
-  const handleLogin = async (username, password, remember ) => {
+  const handleLogin = async (event) => {
+    // event.preventDefault();
     setLoading(true);
     setMessage(false);
 
     try {
-        dispatch(handleLoginDispatch({
-          username: username,
-          password: password,
-          remember: remember
-        }));
-    }
-    catch (error){
-      setMessage(true)
-    }
-    finally{
-      setLoading(false)
-    }
-  }
-
-  // const handleLogin = async (event) => {
-  //   event.preventDefault();
-  //   setLoading(true);
-  //   setMessage(false);
-
-  //   try {
-  //     const response = await apiInstance.post('/auth/login', {
-  //       username: username,
-  //       password: password
-  //     });
+      const response = await apiInstance.post('/auth/login', {
+        username: username,
+        password: password
+      });
   
-  //     const { accessToken, refreshToken } = response.data;
-  //     setAccessToken(accessToken);
-  //     setRefreshToken(refreshToken);
+      const { accessToken, refreshToken } = response.data;
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+
+      dispatch(loginSuccess());
+
       
-  //     console.log(response);
-  //     setLoading(false);
-  //     navigate('/loginsuccess');
+      console.log(response);
+      setLoading(false);
 
-  //   } catch (error) {     
-  //     setMessage(true);
-  //   }
-  //   finally {
-  //     setLoading(false);
-  //   }
+    } catch (error) {     
+      setMessage(true);
+    }
+    finally {
+      setLoading(false);
+    }
 
-  //   // Lưu trữ tài khoản và mật khẩu nếu checkbox được đánh dấu
-  //   if (rememberMe) {
-  //     localStorage.setItem('username', username);
-  //     localStorage.setItem('password', password);
-  //   } else {
-  //     localStorage.removeItem('username');
-  //     localStorage.removeItem('password');
-  //   }  
-  // };
+    // Lưu trữ tài khoản và mật khẩu nếu checkbox được đánh dấu
+    if (rememberMe) {
+      localStorage.setItem('username', username);
+      localStorage.setItem('password', password);
+    } else {
+      localStorage.removeItem('username');
+      localStorage.removeItem('password');
+    }  
+  };
   const handleResetPassword =() => {
     navigate('/reset-password');
   };

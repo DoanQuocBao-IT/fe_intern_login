@@ -1,7 +1,7 @@
 import {  combineReducers } from 'redux';
-import loginReducer from './loginreducer';
+import refreshAccessToken  from './refreshTokenReducer';
 
 const rootReducer = combineReducers({
-        login: loginReducer
+        refreshToken: refreshAccessToken
 })
 export default rootReducer;

@@ -1,7 +1,8 @@
-import { getAccessToken, getRefreshToken, refreshAccessToken } from './screens/LoginScreens';
+import {getAccessToken} from './screens/LoginScreens';
 import axios from 'axios';
-
-
+import { refreshAccessTokenSuccess, refreshAccessTokenFailure } from './actions/refreshTokenAction';
+import { getRefreshToken, refreshAccessToken} from './screens/LoginScreens';
+import store from './store'
 
 export const apiInstance = axios.create({
     baseURL: 'https://hochiminh.mobifone.vn/luongAMGP',
@@ -11,7 +12,7 @@ export const apiInstance = axios.create({
         'Accept': 'application/json',
     }
   });
-
+  
   apiInstance.interceptors.request.use(
     (config) => {
     const accessToken = getAccessToken();
@@ -24,7 +25,6 @@ export const apiInstance = axios.create({
       return Promise.reject(error);
     }
   );
-  
   apiInstance.interceptors.response.use(
     (response) => {
       return response;
@@ -32,19 +32,19 @@ export const apiInstance = axios.create({
     async (error) => {    
       if (error.response.status === 401 ) {
         const refreshToken = getRefreshToken();
-        if (refreshToken) {
-          try {
-            const newAccessToken = await refreshAccessToken(refreshToken);      
-            error.headers.Authorization = `Bearer ${newAccessToken}`;
-            return apiInstance(error);       
-          } catch (Error) { 
-            window.location.href = '/login';    
-          }
+      if (refreshToken) {
+        try {       
+           
+          const newAccessToken = await refreshAccessToken(refreshToken);
+          store.dispatch(refreshAccessTokenSuccess(newAccessToken));
+        } catch (error) {
+          store.dispatch(refreshAccessTokenFailure());
+          console.log("Đã chạy vào đây1")
         }
-        else {
-          localStorage.setItem('message',"Phiên làm việc hết hạn");
-           window.location.href = '/login';        
-        }            
+      } else {
+        
+        store.dispatch(refreshAccessTokenFailure());
+      }
       }
       return Promise.reject(error);
     }

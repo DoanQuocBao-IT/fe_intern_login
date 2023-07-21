@@ -1,9 +1,9 @@
 import React from 'react';
-import { useState, useEffect, useContext } from 'react'; 
-import { getAccessToken } from './LoginScreens';
-import { useNavigate } from 'react-router-dom';
+import { useState} from 'react'; 
 import  {apiInstance}  from '../Instance';
-import { AppContext } from '..';
+import {useDispatch} from 'react-redux';
+import { logout } from '../actions/refreshTokenAction';
+
 
 const LoginSuccess = () => {
     const [list,setList] =useState([
@@ -12,15 +12,10 @@ const LoginSuccess = () => {
             name:'',
         }
     ]);
-    const navigate = useNavigate();
     const [show, setShow] = useState(false);
-    const accessToken = getAccessToken();
-    
-    useEffect(() => {
-        if (!accessToken) {
-          navigate('/login');
-        }
-      }, []);
+    const dispatch =useDispatch();
+
+
     const handleClick = async (e) => {
         e.preventDefault();
         setShow(!show);
@@ -32,8 +27,13 @@ const LoginSuccess = () => {
     
         }
     }
+    const handleClickLogout =(e)=> {
+        e.preventDefault();
+        dispatch(logout())
+    }
     return (
         <div>
+            <button onClick={handleClickLogout}>Logout</button>
             <button onClick={handleClick}>{show ? 'Hide' : 'Show'}</button>
         {show && (
             <>

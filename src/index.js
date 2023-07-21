@@ -1,24 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import'./index.css';
 import reportWebVitals from './reportWebVitals';
 import { ConfigProvider } from 'antd';
 import {LoadProvider} from './context/LoadContext'
 import  {NotifyProvider}  from './context/NotifyContext';
-import store from './store';
+import store, { persistor } from './store';
 import {Provider} from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ConfigProvider theme={{ token: { colorPrimary: '#FF0000' } }}>
     <React.StrictMode>
-      <NotifyProvider>
-        <LoadProvider>
-          <Provider store={store}>
-            <App />
-          </Provider>
-        </LoadProvider>
-      </NotifyProvider>
+    <Provider store={store}>
+      {/* <PersistGate loading={null} persistor={persistor}> */}
+        <NotifyProvider>
+          <LoadProvider>
+              <App />
+          </LoadProvider>
+        </NotifyProvider>
+      {/* </PersistGate> */}
+    </Provider>
     </React.StrictMode>
   </ConfigProvider>
   
